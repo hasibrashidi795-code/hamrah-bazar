@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<title>فروشگاه آنلاین</title>
+
+<style>
+body {
+  font-family: Arial;
+  direction: rtl;
+  background: #f5f5f5;
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+select {
+  padding: 5px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.card {
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+button {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.cart {
+  margin-top: 20px;
+  background: white;
+  padding: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h2 id="title">فروشگاه</h2>
+
+<select onchange="changeLang(this.value)">
+<option value="fa">دری</option>
+<option value="ps">پشتو</option>
+<option value="en">English</option>
+</select>
+</header>
+
+<div class="grid" id="products"></div>
+
+<div class="cart">
+<h3 id="cartTitle">سبد خرید</h3>
+<ul id="cart"></ul>
+</div>
+
+<script>
+const texts = {
+  fa: {
+    title: "فروشگاه",
+    cart: "سبد خرید",
+    add: "اضافه"
+  },
+  ps: {
+    title: "پلورنځی",
+    cart: "د اخیستلو ټوکرۍ",
+    add: "اضافه کړه"
+  },
+  en: {
+    title: "Shop",
+    cart: "Cart",
+    add: "Add"
+  }
+};
+
+let lang = "fa";
+
+const products = [
+  { name: "Coca Cola", price: 50 },
+  { name: "T-Shirt", price: 300 },
+  { name: "Mobile Phone", price: 15000 },
+  { name: "Rice", price: 120 }
+];
+
+let cart = [];
+
+function changeLang(l) {
+  lang = l;
+  document.getElementById("title").innerText = texts[l].title;
+  document.getElementById("cartTitle").innerText = texts[l].cart;
+  render();
+}
+
+function addToCart(p) {
+  cart.push(p);
+  renderCart();
+}
+
+function render() {
+  let container = document.getElementById("products");
+  container.innerHTML = "";
+
+  products.forEach(p => {
+    container.innerHTML += `
+      <div class="card">
+        <h4>${p.name}</h4>
+        <p>${p.price}</p>
+        <button onclick='addToCart(${JSON.stringify(p)})'>
+          ${texts[lang].add}
+        </button>
+      </div>
+    `;
+  });
+}
+
+function renderCart() {
+  let list = document.getElementById("cart");
+  list.innerHTML = "";
+
+  cart.forEach(p => {
+    list.innerHTML += `<li>${p.name} - ${p.price}</li>`;
+  });
+}
+
+render();
+</script>
+
+</body>
+</html>
